@@ -1,0 +1,45 @@
+
+Repo: clean_modern_repo
+  Findings (text): 0
+  Findings (rich): 0
+
+Repo: config_secrets_repo
+  Findings (text): 0
+  Findings (rich): 0
+
+Repo: cpp_legacy_service
+  Findings (text): 8
+  Findings (rich): 8
+
+Repo: dotnet_crypto_app
+  Findings (text): 2
+  Findings (rich): 2
+
+Repo: go_service
+  Findings (text): 1
+  Findings (rich): 1
+
+Repo: java_maven_app
+  Findings (text): 0
+  Findings (rich): 0
+
+Repo: legacy_crypto_lib
+  Findings (text): 9
+  Findings (rich): 9
+
+Repo: mixed_monorepo
+  Findings (text): 1
+  Findings (rich): 1
+
+Repo: node_ts_api
+  Findings (text): 0
+  Findings (rich): 0
+
+Repo: python_flask_api
+  Findings (text): 1
+  Findings (rich): 1
+
+Repo: rust_service
+  Findings (text): 0
+  Findings (rich): 0
+

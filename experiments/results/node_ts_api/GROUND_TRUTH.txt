@@ -1,0 +1,14 @@
+Repo: node_ts_api
+
+Language(s):
+- TypeScript (Node.js http server)
+
+Planted vulnerable patterns (expected rules):
+- VULN-SHA1-001: crypto.createHash(\"sha1\") in insecureToken()
+- VULN-RAND-001: Math.random() usage in insecureToken()
+- VULN-HARDCODE-001: API_KEY constant
+- VULN-HTTP-001: \"http://legacy.internal.service/api\" URL
+
+Notes:
+- Models a small Node/TS API with typical crypto/HTTP mistakes.
+

@@ -1,0 +1,103 @@
+# Build directories
+build/
+build*/
+cmake-build-*/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+
+# IDE files
+.vs/
+.vscode/
+*.vcxproj*
+*.sln
+*.user
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+*.bak
+*.swp
+*.swo
+*~
+
+# Dependencies (if vendored)
+vendor/
+
+# AI Models (29GB+ - exclude from git)
+*.gguf
+*.bin
+*.safetensors
+models/
+models*/
+Qwen2.5-Coder-14B-Instruct-F16.gguf
+
+# Test outputs
+*.sarif
+results*.json
+quantum_fixes.patch
+experimental_results.txt
+comprehensive_research_*.txt
+research_paper_*.json
+demo_repos*/
+test_repos/
+quantum_test_repos/
+
+# Backup directories
+.quantum_migrate_backup/
+*.backup
+
+# Documentation builds
+docs/_build/
+site/
+
+# Coverage reports
+coverage/
+*.gcov
+*.lcov
+
+# Package files
+*.deb
+*.rpm
+*.dmg
+*.pkg
+*.msi
+
+# Debug files
+*.debug
+*.pdb
+*.ilk
+
+# Profiling
+*.prof
+*.pgc
+
+# Large files that shouldn't be in git
+*.zip
+*.tar.gz
+*.rar
+*.7z
+
+# Research papers and generated content
+*.docx
+*.pdf
+gptgenerated_*

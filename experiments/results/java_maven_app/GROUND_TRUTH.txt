@@ -1,0 +1,13 @@
+Repo: java_maven_app
+
+Language(s):
+- Java (simulated Maven app structure)
+
+Planted vulnerable patterns (expected rules):
+- VULN-SHA1-001: MessageDigest.getInstance(\"SHA-1\") in sha1Token()
+- VULN-RAND-001: java.util.Random in insecureRandomInt()
+- VULN-HARDCODE-001: DB_PASSWORD constant
+
+Notes:
+- Uses classic Java crypto classes with weak choices.
+

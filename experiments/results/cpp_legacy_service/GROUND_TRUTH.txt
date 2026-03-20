@@ -1,0 +1,14 @@
+Repo: cpp_legacy_service
+
+Language(s):
+- C++ (OpenSSL-style APIs)
+
+Planted vulnerable patterns (expected rules):
+- VULN-RSA-001: RSA usage in function use_rsa_legacy()
+- VULN-MD5-001: MD5() call in use_md5_legacy()
+- VULN-DES-001: DES_ecb_encrypt() in use_des_legacy()
+- VULN-RAND-001: std::rand() in insecure_session_id()
+
+Notes:
+- Designed to trigger multiple high/critical findings in a small C++ service.
+

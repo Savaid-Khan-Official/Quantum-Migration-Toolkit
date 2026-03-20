@@ -1,0 +1,14 @@
+Repo: go_service
+
+Language(s):
+- Go
+
+Planted vulnerable patterns (expected rules):
+- VULN-MD5-001: crypto/md5 in insecureHash()
+- VULN-RAND-001: math/rand.Seed + rand.Int() in insecureRandom()
+- VULN-HARDCODE-001: ApiToken constant
+- VULN-HTTP-001: \"http://legacy-go-endpoint.local/api\" URL
+
+Notes:
+- Represents a small Go HTTP service with typical crypto and HTTP mistakes.
+

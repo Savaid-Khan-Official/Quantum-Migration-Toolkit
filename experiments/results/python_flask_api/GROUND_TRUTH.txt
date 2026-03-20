@@ -1,0 +1,14 @@
+Repo: python_flask_api
+
+Language(s):
+- Python (Flask-style API)
+
+Planted vulnerable patterns (expected rules):
+- VULN-MD5-001: hashlib.md5(...) in insecure_token()
+- VULN-RAND-001: random.random() in insecure_token()
+- VULN-HARDCODE-001: API_SECRET_KEY constant
+- VULN-TELNET-001: telnetlib usage in insecure_telnet_connect()
+
+Notes:
+- Mimics a simple web API with bad token generation and protocol choices.
+

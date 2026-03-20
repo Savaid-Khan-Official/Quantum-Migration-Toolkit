@@ -1,0 +1,253 @@
+{
+  "version": "2.0",
+  "scanner_name": "QuantumScanner",
+  "settings": {
+    "entropy_threshold": 4.5,
+    "proximity_window": 3,
+    "default_severity_fail": "warning"
+  },
+  "rules": [
+    {
+      "id": "VULN-RSA-001",
+      "keyword": "RSA",
+      "description": "RSA encryption detected - vulnerable to Shor's quantum algorithm",
+      "severity": "critical",
+      "pattern": "\\bRSA\\b",
+      "languages": [".cpp", ".c", ".h", ".hpp", ".py", ".java", ".js", ".ts", ".jsx", ".tsx"],
+      "remediation": "Replace with NIST PQC standard: ML-KEM (FIPS 203) for key encapsulation, ML-DSA (FIPS 204) for digital signatures",
+      "fix_patterns": [
+        { "match": "RSA_new\\(\\)", "replace": "/* TODO: Replace RSA with ML-KEM (FIPS 203) key encapsulation */" },
+        { "match": "RSA_generate_key_ex\\(", "replace": "/* TODO: Replace RSA keygen with ML-KEM keypair generation */" }
+      ],
+      "cwe_id": "CWE-327",
+      "ast_queries": {
+        ".cpp": "(call_expression function: [(identifier) @fn (field_expression field: (field_identifier) @fn)] (#match? @fn \"RSA\"))",
+        ".c":   "(call_expression function: (identifier) @fn (#match? @fn \"RSA\"))",
+        ".py":  "[(call function: (attribute attribute: (identifier) @m) (#match? @m \"generate|import_key\")) (import_from_statement module_name: (dotted_name) @mod (#match? @mod \"RSA\"))]"
+      }
+    },
+    {
+      "id": "VULN-AES128-001",
+      "keyword": "AES-128",
+      "description": "AES-128 detected - insufficient key length for quantum resistance (Grover's algorithm halves effective key size to 64-bit)",
+      "severity": "high",
+      "pattern": "\\bAES[_-]?128\\b",
+      "languages": [".cpp", ".c", ".h", ".hpp", ".py", ".java", ".js", ".ts", ".jsx", ".tsx"],
+      "remediation": "Upgrade to AES-256 which maintains 128-bit quantum security",
+      "fix_patterns": [
+        { "match": "AES[_-]128", "replace": "AES-256" },
+        { "match": "aes_128", "replace": "aes_256" }
+      ],
+      "cwe_id": "CWE-326"
+    },
+    {
+      "id": "VULN-MD5-001",
+      "keyword": "MD5",
+      "description": "MD5 hash function detected - cryptographically broken, collision attacks demonstrated",
+      "severity": "high",
+      "pattern": "\\bMD5\\b",
+      "languages": [".cpp", ".c", ".h", ".hpp", ".py", ".java", ".js", ".ts", ".jsx", ".tsx"],
+      "remediation": "Replace with SHA-256 or SHA-3 for cryptographic hashing",
+      "fix_patterns": [
+        { "match": "hashlib\\.md5\\(", "replace": "hashlib.sha3_256(" },
+        { "match": "MD5_CTX", "replace": "/* TODO: Replace MD5_CTX with EVP_MD_CTX using SHA-256 */" },
+        { "match": "MD5_Init", "replace": "/* TODO: Replace MD5 with SHA-256 via EVP_DigestInit_ex */" }
+      ],
+      "cwe_id": "CWE-328",
+      "ast_queries": {
+        ".cpp": "(call_expression function: [(identifier) @fn (field_expression field: (field_identifier) @fn)] (#match? @fn \"MD5\"))",
+        ".c":   "(call_expression function: (identifier) @fn (#match? @fn \"MD5\"))",
+        ".py":  "(call function: (attribute attribute: (identifier) @m) (#match? @m \"md5\"))"
+      }
+    },
+    {
+      "id": "VULN-DES-001",
+      "keyword": "DES",
+      "description": "DES encryption detected - 56-bit key is trivially brute-forced",
+      "severity": "critical",
+      "pattern": "\\bDES\\b",
+      "languages": [".cpp", ".c", ".h", ".hpp", ".py", ".java", ".js", ".ts", ".jsx", ".tsx"],
+      "remediation": "Replace with AES-256-GCM for symmetric encryption",
+      "fix_patterns": [
+        { "match": "DES\\.new\\(", "replace": "AES.new(  # TODO: Use AES-256-GCM instead of DES" },
+        { "match": "EVP_des_", "replace": "EVP_aes_256_gcm  /* TODO: Replace DES with AES-256-GCM */" }
+      ],
+      "cwe_id": "CWE-327"
+    },
+    {
+      "id": "VULN-SHA1-001",
+      "keyword": "SHA-1",
+      "description": "SHA-1 hash function detected - collision attacks are practical (SHAttered)",
+      "severity": "high",
+      "pattern": "\\bSHA[-_]?1\\b",
+      "languages": [".cpp", ".c", ".h", ".hpp", ".py", ".java", ".js", ".ts", ".jsx", ".tsx"],
+      "remediation": "Replace with SHA-256 or SHA-3",
+      "fix_patterns": [
+        { "match": "hashlib\\.sha1\\(", "replace": "hashlib.sha3_256(" },
+        { "match": "SHA1\\(", "replace": "SHA256( /* TODO: Upgraded from SHA-1 */" }
+      ],
+      "cwe_id": "CWE-328"
+    },
+    {
+      "id": "VULN-3DES-001",
+      "keyword": "3DES",
+      "description": "Triple-DES detected - deprecated by NIST since 2023, vulnerable to Sweet32 attack",
+      "severity": "high",
+      "pattern": "\\b(3DES|Triple[_-]?DES|DESede|des3|DES_EDE)\\b",
+      "languages": [".cpp", ".c", ".h", ".hpp", ".py", ".java", ".js", ".ts", ".jsx", ".tsx"],
+      "remediation": "Replace with AES-256-GCM",
+      "fix_patterns": [
+        { "match": "DES3", "replace": "AES  # TODO: Replace 3DES with AES-256-GCM" }
+      ],
+      "cwe_id": "CWE-327"
+    },
+    {
+      "id": "VULN-RC4-001",
+      "keyword": "RC4",
+      "description": "RC4 stream cipher detected - numerous biases make it completely broken",
+      "severity": "critical",
+      "pattern": "\\bRC4\\b|\\bARC4\\b|\\bARCFOUR\\b",
+      "languages": [".cpp", ".c", ".h", ".hpp", ".py", ".java", ".js", ".ts", ".jsx", ".tsx"],
+      "remediation": "Replace with ChaCha20-Poly1305 or AES-256-GCM",
+      "fix_patterns": [
+        { "match": "ARC4", "replace": "/* TODO: Replace RC4/ARC4 with ChaCha20-Poly1305 */" }
+      ],
+      "cwe_id": "CWE-327"
+    },
+    {
+      "id": "VULN-BF-001",
+      "keyword": "Blowfish",
+      "description": "Blowfish cipher detected - 64-bit block size vulnerable to birthday attacks",
+      "severity": "high",
+      "pattern": "\\b(Blowfish|BF_encrypt|BF_set_key|EVP_bf_)\\b",
+      "languages": [".cpp", ".c", ".h", ".hpp", ".py", ".java", ".js", ".ts", ".jsx", ".tsx"],
+      "remediation": "Replace with AES-256-GCM",
+      "fix_patterns": [],
+      "cwe_id": "CWE-327"
+    },
+    {
+      "id": "VULN-ECB-001",
+      "keyword": "ECB",
+      "description": "ECB cipher mode detected - deterministic encryption leaks plaintext patterns",
+      "severity": "critical",
+      "pattern": "\\bECB\\b|MODE_ECB|_ecb\\(|_ecb_",
+      "languages": [".cpp", ".c", ".h", ".hpp", ".py", ".java", ".js", ".ts", ".jsx", ".tsx"],
+      "remediation": "Use authenticated encryption (GCM mode) instead of ECB",
+      "fix_patterns": [
+        { "match": "MODE_ECB", "replace": "MODE_GCM  # TODO: Switched from ECB to GCM" },
+        { "match": "_ecb\\(", "replace": "_gcm( /* TODO: Switched from ECB to GCM */" }
+      ],
+      "cwe_id": "CWE-327"
+    },
+    {
+      "id": "VULN-PKCS1-001",
+      "keyword": "PKCS1v1.5",
+      "description": "PKCS#1 v1.5 padding detected - vulnerable to Bleichenbacher padding oracle attacks",
+      "severity": "high",
+      "pattern": "PKCS1v1[._]?5|PKCS1_PADDING|pkcs1_v1_5",
+      "languages": [".cpp", ".c", ".h", ".hpp", ".py", ".java", ".js", ".ts", ".jsx", ".tsx"],
+      "remediation": "Use OAEP padding for RSA encryption, PSS for RSA signatures, or migrate to PQC",
+      "fix_patterns": [
+        { "match": "PKCS1_PADDING", "replace": "PKCS1_OAEP_PADDING /* TODO: Upgraded padding */" }
+      ],
+      "cwe_id": "CWE-780"
+    },
+    {
+      "id": "VULN-DSA-001",
+      "keyword": "DSA",
+      "description": "DSA signature scheme detected - vulnerable to quantum attacks via Shor's algorithm",
+      "severity": "high",
+      "pattern": "\\bDSA\\b|DSA_new|DSA_generate",
+      "languages": [".cpp", ".c", ".h", ".hpp", ".py", ".java", ".js", ".ts", ".jsx", ".tsx"],
+      "remediation": "Replace with ML-DSA (FIPS 204) for post-quantum digital signatures",
+      "fix_patterns": [],
+      "cwe_id": "CWE-327"
+    },
+    {
+      "id": "VULN-ECC-001",
+      "keyword": "ECC/ECDSA",
+      "description": "Elliptic Curve cryptography detected - vulnerable to quantum attacks via Shor's algorithm",
+      "severity": "high",
+      "pattern": "\\b(ECDSA|ECDH|EC_KEY|secp256k1|secp384r1|prime256v1|P-256|P-384|P-521|EC_GROUP)\\b",
+      "languages": [".cpp", ".c", ".h", ".hpp", ".py", ".java", ".js", ".ts", ".jsx", ".tsx"],
+      "remediation": "Replace ECDSA with ML-DSA (FIPS 204), ECDH with ML-KEM (FIPS 203)",
+      "fix_patterns": [],
+      "cwe_id": "CWE-327"
+    },
+    {
+      "id": "VULN-DH-001",
+      "keyword": "Diffie-Hellman",
+      "description": "Diffie-Hellman key exchange detected - vulnerable to quantum attacks",
+      "severity": "high",
+      "pattern": "\\b(DH_new|DH_generate|DHE_|diffie[_-]?hellman|ECDHE)\\b",
+      "languages": [".cpp", ".c", ".h", ".hpp", ".py", ".java", ".js", ".ts", ".jsx", ".tsx"],
+      "remediation": "Replace with ML-KEM (FIPS 203) key encapsulation mechanism",
+      "fix_patterns": [],
+      "cwe_id": "CWE-327"
+    },
+    {
+      "id": "VULN-RAND-001",
+      "keyword": "Weak-RNG",
+      "description": "Weak random number generator detected - predictable output unsuitable for cryptography",
+      "severity": "high",
+      "pattern": "\\brand\\(\\)|\\bsrand\\(|\\bmt19937\\b|Math\\.random\\(\\)|random\\.random\\(\\)",
+      "languages": [".cpp", ".c", ".h", ".hpp", ".py", ".java", ".js", ".ts", ".jsx", ".tsx"],
+      "remediation": "Use cryptographically secure RNG: OpenSSL RAND_bytes(), secrets module (Python), crypto.randomBytes (Node.js)",
+      "fix_patterns": [
+        { "match": "rand\\(\\)", "replace": "/* TODO: Replace rand() with RAND_bytes() for crypto use */" },
+        { "match": "random\\.random\\(", "replace": "secrets.token_bytes( # TODO: Use secrets module for crypto" }
+      ],
+      "cwe_id": "CWE-338"
+    },
+    {
+      "id": "VULN-HARDCODE-001",
+      "keyword": "Hardcoded-Secret",
+      "description": "Potential hardcoded credential or secret key detected",
+      "severity": "critical",
+      "pattern": "(password|passwd|api_key|apikey|secret_key|private_key|access_token)\\s*=\\s*[\"'][^\"']{8,}",
+      "languages": [".cpp", ".c", ".h", ".hpp", ".py", ".java", ".js", ".ts", ".jsx", ".tsx", ".json", ".yml", ".yaml", ".env"],
+      "remediation": "Move secrets to environment variables or a secure vault (AWS Secrets Manager, HashiCorp Vault)",
+      "fix_patterns": [
+        { "match": "(password|secret_key|api_key)\\s*=\\s*\"[^\"]+\"", "replace": "/* TODO: Move this secret to environment variables or a vault */" }
+      ],
+      "cwe_id": "CWE-798"
+    },
+    {
+      "id": "VULN-HTTP-001",
+      "keyword": "Insecure-HTTP",
+      "description": "Insecure HTTP URL detected - data transmitted in plaintext",
+      "severity": "warning",
+      "pattern": "http://[a-zA-Z0-9]",
+      "languages": [".cpp", ".c", ".h", ".hpp", ".py", ".java", ".js", ".ts", ".jsx", ".tsx"],
+      "remediation": "Use HTTPS for all network communication",
+      "fix_patterns": [
+        { "match": "http://", "replace": "https://" }
+      ],
+      "cwe_id": "CWE-319"
+    },
+    {
+      "id": "VULN-TELNET-001",
+      "keyword": "Telnet",
+      "description": "Telnet protocol detected - transmits credentials and data in plaintext",
+      "severity": "warning",
+      "pattern": "\\btelnet\\b|\\bTELNET\\b|telnetlib",
+      "languages": [".cpp", ".c", ".h", ".hpp", ".py", ".java", ".js", ".ts", ".jsx", ".tsx"],
+      "remediation": "Replace with SSH for remote access",
+      "fix_patterns": [],
+      "cwe_id": "CWE-319"
+    },
+    {
+      "id": "VULN-SHA224-001",
+      "keyword": "SHA-224",
+      "description": "SHA-224 hash detected - insufficient output length for quantum resistance",
+      "severity": "warning",
+      "pattern": "\\bSHA[-_]?224\\b",
+      "languages": [".cpp", ".c", ".h", ".hpp", ".py", ".java", ".js", ".ts", ".jsx", ".tsx"],
+      "remediation": "Upgrade to SHA-256 or SHA-3 for adequate quantum security margin",
+      "fix_patterns": [
+        { "match": "sha224", "replace": "sha256  # TODO: Upgraded from SHA-224" }
+      ],
+      "cwe_id": "CWE-328"
+    }
+  ]
+}

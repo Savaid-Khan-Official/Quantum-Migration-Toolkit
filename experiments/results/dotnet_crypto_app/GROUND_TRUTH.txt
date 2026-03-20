@@ -1,0 +1,14 @@
+Repo: dotnet_crypto_app
+
+Language(s):
+- C#
+
+Planted vulnerable patterns (expected rules):
+- VULN-SHA1-001: SHA1.Create() in Sha1Token()
+- VULN-RAND-001: System.Random in InsecureRandom()
+- VULN-HARDCODE-001: JwtSigningKey constant
+- VULN-HTTP-001: \"http://legacy-dotnet-service.internal/api\" URL
+
+Notes:
+- Small .NET console application with easily-detected issues.
+
