@@ -100,10 +100,7 @@ coverage/
 *.docx
 *.pdf
 gptgenerated_*
-research_paper.md
-audit_report.txt
 quantum_fixes.patch
 
-# Experimental data and test repos
+# Experimental data (keep audit report)
 experiments/
-test_repo/
