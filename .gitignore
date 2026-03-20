@@ -8,7 +8,7 @@ cmake_install.cmake
 Makefile
 
 # IDE files
-.vs/
+.vs/zz
 .vscode/
 *.vcxproj*
 *.sln
@@ -43,14 +43,12 @@ venv.bak/
 # Dependencies (if vendored)
 vendor/
 
-# AI Models (29GB+ - exclude from git but keep models folder)
+# AI Models (29GB+ - exclude from git)
 *.gguf
 *.bin
 *.safetensors
-models/*.gguf
-models/*.bin
-models/*.safetensors
-Qwen2.5-Coder-14B-Instruct-F16.gguf
+models/
+models*/
 
 # Test outputs
 *.sarif
@@ -102,3 +100,10 @@ coverage/
 *.docx
 *.pdf
 gptgenerated_*
+research_paper.md
+audit_report.txt
+quantum_fixes.patch
+
+# Experimental data and test repos
+experiments/
+test_repo/
