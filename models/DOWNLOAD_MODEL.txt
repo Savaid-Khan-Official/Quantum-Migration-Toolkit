@@ -1,0 +1,66 @@
+# AI Model Download Instructions
+
+## Required Model for AI-Powered Remediation
+
+The Quantum Migration Toolkit uses AI to automatically remediate quantum-vulnerable cryptography. 
+To enable AI remediation features, you need to download the following model:
+
+### Model: Qwen2.5-Coder-14B-Instruct-F16.gguf
+- **Size**: ~29GB
+- **Purpose**: Code generation and cryptographic API remediation
+- **Format**: GGUF (compatible with llama.cpp)
+
+### Download Options:
+
+#### Option 1: Hugging Face (Recommended)
+```
+URL: https://huggingface.co/Qwen/Qwen2.5-Coder-14B-Instruct/tree/main
+File: Qwen2.5-Coder-14B-Instruct-F16.gguf
+```
+
+#### Option 2: Direct Download Link
+```
+URL: https://huggingface.co/Qwen/Qwen2.5-Coder-14B-Instruct/resolve/main/Qwen2.5-Coder-14B-Instruct-F16.gguf
+```
+
+### Installation Steps:
+
+1. Download the model file using one of the options above
+2. Place the downloaded file in this models/ directory
+3. Ensure the file is named exactly: `Qwen2.5-Coder-14B-Instruct-F16.gguf`
+4. Verify the file size is approximately 29GB
+
+### Usage:
+
+Once the model is downloaded, you can use AI remediation:
+
+```bash
+./build/cli/quantum-migrate /path/to/code \
+    --model models/Qwen2.5-Coder-14B-Instruct-F16.gguf \
+    --remediate \
+    --vendor-into /path/to/code \
+    --patch-build-system \
+    --backup
+```
+
+### Alternative Models:
+
+If you have limited disk space, you can use smaller quantized versions:
+- Qwen2.5-Coder-7B-Instruct-Q4_K_M.gguf (~4.7GB)
+- Qwen2.5-Coder-1.5B-Instruct-Q4_K_M.gguf (~1.1GB)
+
+Note: Smaller models may have reduced accuracy for complex cryptographic remediation tasks.
+
+### Storage Requirements:
+
+- Minimum free space: 35GB (for download + extraction)
+- Recommended: 50GB+ for additional models and future updates
+
+### Troubleshooting:
+
+If the model is not found, the tool will fall back to regex-only scanning without AI remediation.
+Check the file path and permissions if you encounter "model not found" errors.
+
+---
+**Note**: This model file is intentionally excluded from git to keep the repository size manageable.
+Please download it separately to enable full AI-powered features.

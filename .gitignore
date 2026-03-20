@@ -43,12 +43,13 @@ venv.bak/
 # Dependencies (if vendored)
 vendor/
 
-# AI Models (29GB+ - exclude from git)
+# AI Models (29GB+ - exclude from git but keep models folder)
 *.gguf
 *.bin
 *.safetensors
-models/
-models*/
+models/*.gguf
+models/*.bin
+models/*.safetensors
 Qwen2.5-Coder-14B-Instruct-F16.gguf
 
 # Test outputs
