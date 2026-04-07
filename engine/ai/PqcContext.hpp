@@ -1,6 +1,6 @@
 #pragma once
 // ============================================================================
-// PqcContext.hpp — Context-Aware PQC API Injection for AI Remediation
+// PqcContext.hpp —- Context-Aware PQC API Injection for AI Remediation
 // ============================================================================
 // The CORE INNOVATION of the Quantum Migration Toolkit v2.1.
 //
